@@ -2,7 +2,7 @@ package pkg
 
 import (
 	"context"
-	"hashservice/hashservice"
+	"gatewayservice/api"
 
 	"google.golang.org/grpc"
 )
@@ -14,11 +14,11 @@ type Service interface {
 }
 
 type GatewayService struct {
-	client hashservice.HashServiceClient
+	client api.HashServiceClient
 }
 
 func NewGatewayService(conn *grpc.ClientConn) Service {
-	c := hashservice.NewHashServiceClient(conn)
+	c := api.NewHashServiceClient(conn)
 
 	return &GatewayService{
 		client: c,
@@ -28,7 +28,7 @@ func NewGatewayService(conn *grpc.ClientConn) Service {
 func (s *GatewayService) CreateHash(ctx context.Context, payload string) (string, error) {
 	resp, err := s.client.CreateHash(
 		ctx,
-		&hashservice.HashRequest{
+		&api.HashRequest{
 			Payload: payload,
 		},
 	)
@@ -42,7 +42,7 @@ func (s *GatewayService) CreateHash(ctx context.Context, payload string) (string
 func (s *GatewayService) CheckHash(ctx context.Context, Hash string) (bool, error) {
 	resp, err := s.client.CheckHash(
 		ctx,
-		&hashservice.HashRequest{
+		&api.HashRequest{
 			Payload: Hash,
 		},
 	)
@@ -56,7 +56,7 @@ func (s *GatewayService) CheckHash(ctx context.Context, Hash string) (bool, erro
 func (s *GatewayService) GetHash(ctx context.Context, payload string) (string, error) {
 	resp, err := s.client.GetHash(
 		ctx,
-		&hashservice.HashRequest{
+		&api.HashRequest{
 			Payload: payload,
 		},
 	)

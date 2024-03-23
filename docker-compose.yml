@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      dockerfile: gateway-service/Dockerfile
+      context: .
+    ports:
+      - "3000:3000"
+
+  GRPCServer:
+    build:
+      dockerfile: hash-service/Dockerfile
+      context: .
+    ports:
+      - "8080:8080"
