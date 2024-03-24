@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.25.1
-// source: api/api.proto
+// source: service.proto
 
 package api
 
@@ -37,7 +37,7 @@ func NewHashServiceClient(cc grpc.ClientConnInterface) HashServiceClient {
 
 func (c *hashServiceClient) CreateHash(ctx context.Context, in *HashRequest, opts ...grpc.CallOption) (*HashResponse, error) {
 	out := new(HashResponse)
-	err := c.cc.Invoke(ctx, "/api.HashService/CreateHash", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/hashservice.HashService/CreateHash", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (c *hashServiceClient) CreateHash(ctx context.Context, in *HashRequest, opt
 
 func (c *hashServiceClient) GetHash(ctx context.Context, in *HashRequest, opts ...grpc.CallOption) (*HashResponse, error) {
 	out := new(HashResponse)
-	err := c.cc.Invoke(ctx, "/api.HashService/GetHash", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/hashservice.HashService/GetHash", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (c *hashServiceClient) GetHash(ctx context.Context, in *HashRequest, opts .
 
 func (c *hashServiceClient) CheckHash(ctx context.Context, in *HashRequest, opts ...grpc.CallOption) (*HashResponseOther, error) {
 	out := new(HashResponseOther)
-	err := c.cc.Invoke(ctx, "/api.HashService/CheckHash", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/hashservice.HashService/CheckHash", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func _HashService_CreateHash_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.HashService/CreateHash",
+		FullMethod: "/hashservice.HashService/CreateHash",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(HashServiceServer).CreateHash(ctx, req.(*HashRequest))
@@ -126,7 +126,7 @@ func _HashService_GetHash_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.HashService/GetHash",
+		FullMethod: "/hashservice.HashService/GetHash",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(HashServiceServer).GetHash(ctx, req.(*HashRequest))
@@ -144,7 +144,7 @@ func _HashService_CheckHash_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.HashService/CheckHash",
+		FullMethod: "/hashservice.HashService/CheckHash",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(HashServiceServer).CheckHash(ctx, req.(*HashRequest))
@@ -156,7 +156,7 @@ func _HashService_CheckHash_Handler(srv interface{}, ctx context.Context, dec fu
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var HashService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.HashService",
+	ServiceName: "hashservice.HashService",
 	HandlerType: (*HashServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -173,5 +173,5 @@ var HashService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/api.proto",
+	Metadata: "service.proto",
 }

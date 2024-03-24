@@ -1,13 +1,11 @@
 FROM golang:latest
 
-WORKDIR /gateway-service
+COPY ./gateway-service/go.mod .
+COPY ./gateway-service/go.sum .
 
-COPY go.mod .
-COPY go.sum .
+RUN go mod download
 
-RUN go mod tidy
-
-COPY . .
+COPY ./gateway-service .
 
 RUN go build -o server .
 

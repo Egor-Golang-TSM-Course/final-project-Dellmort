@@ -56,7 +56,6 @@ func (hs *HashService) CheckHash(ctx context.Context, req *hashservice.HashReque
 }
 
 func (hs *HashService) Run() error {
-	// os.Getenv("PORT")
 	l, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		return err

@@ -17,7 +17,11 @@ func main() {
 
 	opts := grpc.WithTransportCredentials(insecure.NewCredentials())
 
-	conn, err := grpc.Dial(os.Getenv("GRPC_PORT"), opts)
+	addr := os.Getenv("SERVER_ADDRESS")
+	if addr == "" {
+		addr = ":8080"
+	}
+	conn, err := grpc.Dial(addr, opts)
 	if err != nil {
 		log.Fatal(err)
 	}

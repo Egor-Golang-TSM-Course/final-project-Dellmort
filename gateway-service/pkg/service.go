@@ -2,7 +2,8 @@ package pkg
 
 import (
 	"context"
-	"gatewayservice/api"
+	"fmt"
+	"gatewayservice/hash/api"
 
 	"google.golang.org/grpc"
 )
@@ -33,7 +34,7 @@ func (s *GatewayService) CreateHash(ctx context.Context, payload string) (string
 		},
 	)
 	if err != nil {
-		return resp.GetHash(), err
+		return resp.GetHash(), fmt.Errorf("CreateHash %w", err)
 	}
 
 	return resp.GetHash(), nil

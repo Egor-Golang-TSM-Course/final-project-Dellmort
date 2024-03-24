@@ -1,16 +1,29 @@
 version: '3.8'
 
 services:
-  server:
+  client:
+    hostname: localhost
     build:
       dockerfile: gateway-service/Dockerfile
       context: .
+    environment:
+      SERVER_ADDRESS: 'grpcserver:8080'
     ports:
       - "3000:3000"
+    depends_on:
+      - grpcserver
 
-  GRPCServer:
+  grpcserver:
+    hostname: localhost
     build:
       dockerfile: hash-service/Dockerfile
       context: .
     ports:
       - "8080:8080"
+    networks:
+      - default
+
+
+networks:
+  default:
+    name: gateway-networks

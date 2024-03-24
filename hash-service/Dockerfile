@@ -1,16 +1,14 @@
 FROM golang:latest
 
-WORKDIR /hash-service
+COPY ./hash-service/go.mod .
+COPY ./hash-service/go.sum .
 
-COPY go.mod .
-COPY go.sum .
+RUN go mod download
 
-RUN go mod tidy
+COPY /hash-service .
 
-COPY . .
-
-RUN go build -o grpcserver .
+RUN go build -o servergrpc .
 
 EXPOSE 8080:8080
 
-CMD ["./grpcserver"]
+CMD ["./servergrpc"]

@@ -33,6 +33,6 @@ func MustLoadEnv() {
 
 	err := godotenv.Load(*configPath)
 	if err != nil {
-		log.Fatal("Error load .env file")
+		log.Fatal("LoadEnv", "Error load .env file")
 	}
 }

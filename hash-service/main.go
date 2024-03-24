@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	service "hashservice/pkg"
 	storagemap "hashservice/storage/map"
 )
@@ -10,5 +11,6 @@ func main() {
 		storagemap.NewStorageMap(),
 	)
 
+	fmt.Println("GRPC server started...")
 	srv.Run()
 }
