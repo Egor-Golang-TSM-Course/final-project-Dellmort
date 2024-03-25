@@ -3,6 +3,9 @@ package pkg
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -18,7 +21,7 @@ type Response struct {
 }
 
 type existsRequest struct {
-	Hash string `json:"hash"`
+	Payload string `json:"payload"`
 }
 
 type existsResponse struct {
@@ -30,8 +33,8 @@ func decodeRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var req Request
 
 	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
-		return nil, err
+	if err != nil && !errors.Is(err, io.EOF) {
+		return nil, fmt.Errorf("json error: %w", err)
 	}
 
 	return req, nil
@@ -40,7 +43,7 @@ func decodeExistsRequest(_ context.Context, r *http.Request) (interface{}, error
 	var req existsRequest
 
 	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
+	if err != nil && !errors.Is(err, io.EOF) {
 		return nil, err
 	}
 

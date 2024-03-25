@@ -15,12 +15,12 @@ import (
 func main() {
 	config.MustLoadEnv()
 
-	opts := grpc.WithTransportCredentials(insecure.NewCredentials())
-
 	addr := os.Getenv("SERVER_ADDRESS")
 	if addr == "" {
 		addr = ":8080"
 	}
+
+	opts := grpc.WithTransportCredentials(insecure.NewCredentials())
 	conn, err := grpc.Dial(addr, opts)
 	if err != nil {
 		log.Fatal(err)
@@ -30,8 +30,8 @@ func main() {
 
 	endpoints := pkg.Endpoints{
 		CreateHash: pkg.CreateHashEndpoint(srv),
-		CheckHash:  pkg.CheckHashEndpoint(srv),
-		ExistsHash: pkg.ExistsHashEndpoint(srv),
+		GetHash:    pkg.GetHashEndpoint(srv),
+		CheckHash:  pkg.ExistsHashEndpoint(srv),
 	}
 
 	handler := pkg.NewServerHTTP(&endpoints)

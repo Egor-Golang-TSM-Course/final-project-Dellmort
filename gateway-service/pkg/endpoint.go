@@ -27,7 +27,7 @@ func CreateHashEndpoint(srv Service) endpoint.Endpoint {
 	}
 }
 
-func CheckHashEndpoint(srv Service) endpoint.Endpoint {
+func GetHashEndpoint(srv Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req, ok := request.(Request)
 		if !ok {
@@ -50,7 +50,7 @@ func ExistsHashEndpoint(srv Service) endpoint.Endpoint {
 			return existsResponse{Err: ErrUnexpected}, ErrUnexpected
 		}
 
-		state, err := srv.CheckHash(ctx, req.Hash)
+		state, err := srv.CheckHash(ctx, req.Payload)
 		if err != nil {
 			return existsResponse{Err: err}, err
 		}
@@ -61,8 +61,8 @@ func ExistsHashEndpoint(srv Service) endpoint.Endpoint {
 
 type Endpoints struct {
 	CreateHash endpoint.Endpoint
+	GetHash    endpoint.Endpoint
 	CheckHash  endpoint.Endpoint
-	ExistsHash endpoint.Endpoint
 }
 
 func (e Endpoints) Create(ctx context.Context) (string, error) {
@@ -85,10 +85,10 @@ func (e Endpoints) Create(ctx context.Context) (string, error) {
 	return r.Hash, nil
 }
 
-func (e Endpoints) Check(ctx context.Context) (string, error) {
+func (e Endpoints) Get(ctx context.Context) (string, error) {
 	req := Request{}
 
-	resp, err := e.CheckHash(ctx, req)
+	resp, err := e.GetHash(ctx, req)
 	if err != nil {
 		return "", err
 	}
@@ -108,7 +108,7 @@ func (e Endpoints) Check(ctx context.Context) (string, error) {
 func (e Endpoints) Exists(ctx context.Context) (bool, error) {
 	req := Request{}
 
-	resp, err := e.ExistsHash(ctx, req)
+	resp, err := e.CheckHash(ctx, req)
 	if err != nil {
 		return false, err
 	}

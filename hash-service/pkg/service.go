@@ -3,12 +3,18 @@ package service
 import (
 	"context"
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"hashservice/hashservice"
 	"hashservice/storage"
 	"net"
 
 	"google.golang.org/grpc"
+)
+
+var (
+	ErrPayloadEmpty   = errors.New("payload is empty")
+	ErrInvalidPayload = errors.New("payload is invalid not json")
 )
 
 type HashService struct {
@@ -23,6 +29,10 @@ func NewHashService(s storage.Storage) *HashService {
 }
 
 func (hs *HashService) CreateHash(ctx context.Context, req *hashservice.HashRequest) (*hashservice.HashResponse, error) {
+	if req.GetPayload() == "" {
+		return &hashservice.HashResponse{}, ErrPayloadEmpty
+	}
+
 	h := sha256.New()
 	h.Write([]byte(req.GetPayload()))
 
@@ -35,6 +45,10 @@ func (hs *HashService) CreateHash(ctx context.Context, req *hashservice.HashRequ
 }
 
 func (hs *HashService) GetHash(ctx context.Context, req *hashservice.HashRequest) (*hashservice.HashResponse, error) {
+	if req.GetPayload() == "" {
+		return &hashservice.HashResponse{}, ErrPayloadEmpty
+	}
+
 	hash, err := hs.storage.GetHash(req.GetPayload())
 	if err != nil {
 		return nil, err
@@ -45,6 +59,10 @@ func (hs *HashService) GetHash(ctx context.Context, req *hashservice.HashRequest
 	}, nil
 }
 func (hs *HashService) CheckHash(ctx context.Context, req *hashservice.HashRequest) (*hashservice.HashResponseOther, error) {
+	if req.GetPayload() == "" {
+		return &hashservice.HashResponseOther{}, ErrPayloadEmpty
+	}
+
 	exists, err := hs.storage.CheckHash(req.GetPayload())
 	if err != nil {
 		return nil, err
