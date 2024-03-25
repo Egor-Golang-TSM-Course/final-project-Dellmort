@@ -1,11 +1,5 @@
 package storagemap
 
-import "errors"
-
-var (
-	ErrNotFound = errors.New("hash not found")
-)
-
 type StorageMap struct {
 	hashes map[string]string
 }
@@ -38,5 +32,5 @@ func (s *StorageMap) GetHash(payload string) (string, error) {
 		return hash, nil
 	}
 
-	return "", ErrNotFound
+	return "", nil
 }

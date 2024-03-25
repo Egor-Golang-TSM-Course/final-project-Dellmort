@@ -44,7 +44,7 @@ func decodeExistsRequest(_ context.Context, r *http.Request) (interface{}, error
 
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil && !errors.Is(err, io.EOF) {
-		return nil, err
+		return nil, fmt.Errorf("json error: %w", err)
 	}
 
 	return req, nil

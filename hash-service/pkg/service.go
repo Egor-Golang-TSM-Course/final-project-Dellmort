@@ -15,6 +15,7 @@ import (
 var (
 	ErrPayloadEmpty   = errors.New("payload is empty")
 	ErrInvalidPayload = errors.New("payload is invalid not json")
+	ErrNotFound       = errors.New("hash not found")
 )
 
 type HashService struct {
@@ -52,6 +53,10 @@ func (hs *HashService) GetHash(ctx context.Context, req *hashservice.HashRequest
 	hash, err := hs.storage.GetHash(req.GetPayload())
 	if err != nil {
 		return nil, err
+	}
+
+	if hash == "" {
+		return &hashservice.HashResponse{}, ErrNotFound
 	}
 
 	return &hashservice.HashResponse{

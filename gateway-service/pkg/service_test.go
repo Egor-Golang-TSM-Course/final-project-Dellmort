@@ -76,8 +76,7 @@ func TestService_CheckHashOK(t *testing.T) {
 func TestService_GetHashOKError(t *testing.T) {
 	ctx := context.Background()
 	payload := ` {
-		payload": "test
-	 `
+		payload": "test`
 
 	opts := grpc.WithTransportCredentials(insecure.NewCredentials())
 	conn, err := grpc.Dial(serverAddr(), opts)
@@ -86,7 +85,10 @@ func TestService_GetHashOKError(t *testing.T) {
 	srv := NewGatewayService(conn)
 
 	answ, err := srv.GetHash(ctx, payload)
-	assert.Error(t, err)
+	if assert.Error(t, err) {
+		assert.EqualError(t, err, "rpc error: code = Unknown desc = hash not found")
+	}
+	t.Log(err)
 
 	assert.Equal(t, answ, "")
 }
